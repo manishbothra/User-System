@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<title>
+
+AngularJs $http.post() Service Response Example
+
+</title>
+
+<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+
+<script type="text/javascript">
+
+var app = angular.module('postserviceApp', []);
+
+app.controller('postserviceCtrl', function ($scope, $http) {
+	$scope.comId = null;
+	$scope.comName = null;
+	$scope.emp = null;
+	$scope.postdata = function (comId,comName,emp) {
+		var data = {
+		comId: comId,
+		comName: comName,
+		emp: emp
+		};
+		console.log(data);
+		
+		//Call the services
+		$http.post('/controller/saveData', JSON.stringify(data)).then(function (response) {
+			if(response){
+				$scope.msg = response.data[0];
+			}
+		});
+		$scope.reset=function(){
+			document.getElementById("myForm").reset();
+		};
+	};
+
+});
+</script>
+</head>
+<body>
+<div ng-app="postserviceApp" ng-controller="postserviceCtrl">
+	<form id="myForm">
+		Company ID <input ng-model="comId" onclick="document.getElementById('comId').value = ''"/><br/><br/>
+		
+		Name of Company <input ng-model="comName" /><br/><br/>
+		Number of employee : <input ng-model="emp" /><br/><br/>
+		<input type="submit" value="ADD" ng-click="postdata(comId,comName,emp);reset()" />
+	</form>
+	<form action="index.html"><input type="submit" value="Back"></form>
+	<p>Output Message : {{msg}}</p>
+</div>
+</body>
+</html>
